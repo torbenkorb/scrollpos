@@ -1,0 +1,212 @@
+<!doctype html>
+<html class="no-js" lang="de">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script> -->
+        <!--<link rel="stylesheet" href="css/main.css"> -->
+
+        <style type="text/css">
+
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .site:after {
+                content: "";
+                display: block;
+                clear: both;
+            }
+
+            .site {
+                max-width: 1000px;
+                margin: 0 auto;
+                position: relative;
+            }
+            .sidebar {
+                float: left;
+                width: 50%;
+            }
+            .element {
+                position: fixed;
+                margin-top: 120px;
+                width: 250px;
+                height: 250px;
+                background-color: transparent;
+                border-radius: 50%;
+                transition: transform .1s ease-out;
+                overflow: hidden;
+            }
+            .scrollable-content {
+                float: right;
+                width: 50%;
+                margin: 0 auto;
+                padding-top: 120px;
+            }
+            .site-spacer {
+                height: 1500px;
+            }
+            .yep {
+                background-color: rgba(0,0,0,0.87);
+                color: rgba(255,255,255,0.7);
+            }
+            .yip {
+                background-color: midnightblue;
+                color: rgba(255,255,255,0.7);
+            }
+            .yup {
+                background-color: darkmagenta;
+                color: rgba(255,255,255,0.7);
+            }
+
+            .progress-bar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 40px;
+                background-color: #f0f0f0;
+                overflow: hidden;
+            }
+            .progress-line {
+                width: 100%;
+                background-color: tomato;
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform .1s ease-out;
+            }
+        </style>
+    </head>
+    <body>
+
+    <div class="site">
+
+        <div class="progress-bar">
+            <div class="progress-line"></div>
+        </div>
+
+        <div class="sidebar">
+            <div class="element">
+                <img src="https://image.freepik.com/free-vector/green-monster_23-2147519799.jpg">
+            </div>
+        </div>
+
+        <div class="scrollable-content">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+            <p class="special-class">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+            <div class="site-spacer"></div>
+
+            <p class="middle-class">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+            <div class="site-spacer"></div>
+
+            <p class="bottom-class">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+
+        let scrolling = false;
+        let scrollPos = 0;
+        const body = document.querySelector('body');
+        const site = document.querySelector('.site');
+        const triggerElement = document.querySelector('.special-class');
+        const progressbar = document.querySelector('.progress-bar');
+        const progressline = document.querySelector('.progress-line');
+        const element = document.querySelector('.element');
+
+        var maxScroll = Math.max(document.body.scrollHeight,document.body.offsetHeight,document.documentElement.clientHeight,document.documentElement.scrollHeight,document.documentElement.offsetHeight)-window.innerHeight; //see [http://stackoverflow.com/a/17698713/3344111]
+
+        console.log(maxScroll);
+
+        function onScroll() {
+            scrollPos = window.scrollY;
+            requestTick();
+        }
+
+        function requestTick() {
+            if(!scrolling) {
+                requestAnimationFrame(updateOnScroll);
+                scrolling = true;
+            }
+
+        }
+
+        function updateOnScroll() {
+            scrolling = false;
+
+            // let progress = scrollPos / (body.scrollHeight - window.innerHeight);
+            let currentScrollProgress = roundDecimal(scrollPos/maxScroll, 4);
+
+            progressline.style.transform = `scaleX(${currentScrollProgress})`;
+            element.style.transform = `scale(${(1 - currentScrollProgress)})`;
+
+            if((scrollPos + progressbar.scrollHeight) > triggerElement.offsetTop) {
+                site.classList.add('yep')
+            } else {
+                site.classList.remove('yep')
+            }
+
+            if(scrollPos > (document.querySelector('.middle-class').offsetTop - (window.innerHeight/2))) {
+                site.classList.add('yip')
+            } else {
+                site.classList.remove('yip')
+            }
+
+            if(scrollPos > (document.querySelector('.bottom-class').offsetTop -window.innerHeight)) {
+                site.classList.add('yup')
+            } else {
+                site.classList.remove('yup')
+            }
+
+
+        }
+
+        window.addEventListener('scroll', onScroll);
+
+        console.log(document.querySelector('.bottom-class').offsetTop -window.innerHeight);
+
+
+        function roundDecimal(value, place) {
+            return Math.round(value * Math.pow(10, place)) / Math.pow(10, place);
+        }
+
+    </script>
+
+    </body>
+</html>
