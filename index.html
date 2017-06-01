@@ -152,8 +152,6 @@
 
         var maxScroll = Math.max(document.body.scrollHeight,document.body.offsetHeight,document.documentElement.clientHeight,document.documentElement.scrollHeight,document.documentElement.offsetHeight)-window.innerHeight; //see [http://stackoverflow.com/a/17698713/3344111]
 
-        console.log(maxScroll);
-
         function onScroll() {
             scrollPos = window.scrollY;
             requestTick();
@@ -173,8 +171,17 @@
             // let progress = scrollPos / (body.scrollHeight - window.innerHeight);
             let currentScrollProgress = roundDecimal(scrollPos/maxScroll, 4);
 
+
+            let specialValue = 1 - roundDecimal(currentScrollProgress*.65, 4);
+
+            let moreSpecial = 1 - Math.min(.65, (scrollPos/750 * .65));
+
+            console.log(scrollPos);
+
+
+
             progressline.style.transform = `scaleX(${currentScrollProgress})`;
-            element.style.transform = `scale(${(1 - currentScrollProgress)})`;
+            element.style.transform = `scale(${moreSpecial})`;
 
             if((scrollPos + progressbar.scrollHeight) > triggerElement.offsetTop) {
                 site.classList.add('yep')
@@ -195,12 +202,11 @@
             }
 
 
+
+
         }
 
         window.addEventListener('scroll', onScroll);
-
-        console.log(document.querySelector('.bottom-class').offsetTop -window.innerHeight);
-
 
         function roundDecimal(value, place) {
             return Math.round(value * Math.pow(10, place)) / Math.pow(10, place);
